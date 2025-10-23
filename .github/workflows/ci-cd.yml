@@ -323,11 +323,6 @@ jobs:
             echo "✅ No orphaned ALBs found."
           fi
 
-          echo "🔹 Cleaning ArgoCD application..."
-          kubectl patch app flask -n argocd -p '{"metadata":{"finalizers":null}}' --type=merge || true
-          kubectl delete applications -n argocd flask --ignore-not-found=true || true
-          helm uninstall argocd -n argocd || true
-
           echo "🔹 Destroying EKS cluster via Terraform..."
           terraform init -upgrade
           terraform destroy -target=module.eks -auto-approve || true
